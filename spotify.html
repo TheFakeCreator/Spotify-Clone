@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spotify</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Oooh+Baby&display=swap');
+:root {
+    --seekbar-thumb-color: white; 
+}
+
+*{
+    margin: 0;
+    padding: 0;
+
+}
+body{
+    background-color: black;
+}
+#main{
+    display: flex;
+    height: 100vh;
+    flex-flow: column;
+}
+#player{
+    flex: 0 0 83px;
+    background-color: black;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+#screen{
+    margin-top: 10px;
+    margin-left: 10px;
+    flex: 1 1 auto;
+    overflow: auto;
+    display: flex;
+    flex-direction: row;
+    /* overflow: hidden; */
+}
+
+/*Screen Left panel styling */
+
+#l-panel{
+    height: 100%;
+    width: 70px;
+    display: flex;
+    flex-shrink: 0;
+    flex-grow: 0;
+    flex-direction: column;
+    transition: all 0.4s;
+}
+#nav{
+    height: 120px;
+    width: 100%;
+    background-color: rgb(22, 22, 22);
+    display: flex;
+    flex-grow: 0;
+    flex-shrink: 0;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+.nav-icon{
+    height: fit-content;
+    width: fit-content;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#home{
+    transition: all 0.4s;
+}
+#search{
+    transition: all 0.4s;
+}
+.nav-icon>a>.material-symbols-rounded{
+    font-size: 36px;
+    color: rgb(223, 223, 223);
+    transition: 0.1s all;
+    cursor: pointer;
+}
+.nav-icon>a>.material-symbols-rounded:hover{
+    color: white;
+
+}
+#playlist{
+    width: 100%;
+    background-color: rgb(22, 22, 22);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* justify-content: space-evenly; */
+}
+#playlist>#books>.material-symbols-rounded{
+    font-size: 36px;
+    color: rgb(223, 223, 223);
+    cursor: pointer;
+    transition: 0.1s all;
+}
+#playlist>#books>.material-symbols-rounded:hover{
+    color: white;
+    
+}
+#books{
+    height: 65px;
+    flex-shrink: 0;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0px 10px 50px black;
+    z-index: 10;
+
+}
+#playlist-cont{
+    width: 100%;
+    height: 500px;
+    /* display: flex; */
+    /* flex-direction: column; */
+    align-items: center;
+    justify-content: center;
+    overflow: scroll;
+
+}
+#playlist-cont::-webkit-scrollbar{
+    display: none;
+
+}
+.playlist-thumb{
+    height: 50px;
+    width: 50px;
+    background-color: rgb(223, 223, 223);
+    margin-top: 15px;
+    margin-bottom: 15px;
+    margin-left: 10px;
+    border-radius: 5px;
+    transition: 0.3s all;
+    cursor: pointer;
+}
+.playlist-thumb:first-child{
+    background-image: url(https://community.spotify.com/t5/image/serverpage/image-id/104727iC92B541DB372FBC7?v=v2);
+    background-size: cover;
+}
+.playlist-thumb:nth-child(2){
+    background-image: linear-gradient(rgb(122,13,187),rgb(218, 69, 210));
+}
+.playlist-thumb:nth-child(3){
+    background-image: linear-gradient(rgb(228, 159, 57),rgb(218, 79, 69));
+
+}
+.playlist-thumb:nth-child(4){
+    background-image: linear-gradient(rgb(166, 226, 54),rgb(69, 218, 89));
+
+}
+.playlist-thumb:nth-child(5){
+    background-image: linear-gradient(rgb(226, 41, 127),rgb(226, 38, 38));
+
+}
+.playlist-thumb:nth-child(6){
+    background-image: linear-gradient(rgb(56, 201, 226),rgb(1, 138, 201));
+
+}
+.playlist-thumb:nth-child(7){
+    background-image: linear-gradient(rgb(233, 19, 19),rgb(197, 92, 22));
+
+}
+.playlist-thumb:nth-child(8){
+    background-image: linear-gradient(rgb(223, 9, 98),rgb(252, 68, 145));
+
+}
+.playlist-thumb:nth-child(9){
+    background-image: linear-gradient(rgb(255, 41, 105),rgb(255, 0, 64));
+
+}
+.playlist-thumb:nth-child(10){
+    background-image: linear-gradient(rgb(43, 255, 0),rgb(38, 143, 17));
+
+}
+.playlist-thumb:nth-child(11){
+    background-image: linear-gradient(rgb(235, 59, 59),rgb(192, 27, 27));
+
+}
+.playlist-thumb:nth-child(12){
+    background-image: linear-gradient(rgb(236, 223, 37),rgb(56, 206, 26));
+
+}
+.playlist-thumb:nth-child(13){
+    background: hsla(333, 37%, 46%, 1);
+
+background: linear-gradient(45deg, hsla(333, 37%, 46%, 1) 0%, hsla(243, 10%, 47%, 1) 50%, hsla(197, 44%, 42%, 1) 100%);
+
+background: -moz-linear-gradient(45deg, hsla(333, 37%, 46%, 1) 0%, hsla(243, 10%, 47%, 1) 50%, hsla(197, 44%, 42%, 1) 100%);
+
+background: -webkit-linear-gradient(45deg, hsla(333, 37%, 46%, 1) 0%, hsla(243, 10%, 47%, 1) 50%, hsla(197, 44%, 42%, 1) 100%);
+
+filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#A04970", endColorstr="#6D6C83", GradientType=1 );
+
+}
+.playlist-thumb:nth-child(14){
+    background: hsla(281, 37%, 45%, 1);
+
+background: linear-gradient(135deg, hsla(281, 37%, 45%, 1) 0%, hsla(1, 62%, 48%, 1) 100%);
+
+background: -moz-linear-gradient(135deg, hsla(281, 37%, 45%, 1) 0%, hsla(1, 62%, 48%, 1) 100%);
+
+background: -webkit-linear-gradient(135deg, hsla(281, 37%, 45%, 1) 0%, hsla(1, 62%, 48%, 1) 100%);
+
+filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#83489E", endColorstr="#C5302E", GradientType=1 );
+}
+.playlist-thumb:nth-child(15){
+    background: hsla(136, 82%, 72%, 1);
+
+background: linear-gradient(135deg, hsla(136, 82%, 72%, 1) 0%, hsla(205, 84%, 36%, 1) 100%);
+
+background: -moz-linear-gradient(135deg, hsla(136, 82%, 72%, 1) 0%, hsla(205, 84%, 36%, 1) 100%);
+
+background: -webkit-linear-gradient(135deg, hsla(136, 82%, 72%, 1) 0%, hsla(205, 84%, 36%, 1) 100%);
+
+filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#7EF29D", endColorstr="#0F68A9", GradientType=1 );
+}
+.playlist-thumb:nth-child(16){
+    background: hsla(185, 64%, 51%, 1);
+
+background: linear-gradient(135deg, hsla(185, 64%, 51%, 1) 0%, hsla(277, 74%, 24%, 1) 100%);
+
+background: -moz-linear-gradient(135deg, hsla(185, 64%, 51%, 1) 0%, hsla(277, 74%, 24%, 1) 100%);
+
+background: -webkit-linear-gradient(135deg, hsla(185, 64%, 51%, 1) 0%, hsla(277, 74%, 24%, 1) 100%);
+
+filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#30C5D2", endColorstr="#471069", GradientType=1 );
+}
+.playlist-thumb:nth-child(17){background: hsla(319, 82%, 52%, 1);
+
+    background: linear-gradient(135deg, hsla(319, 82%, 52%, 1) 0%, hsla(197, 61%, 83%, 1) 100%);
+    
+    background: -moz-linear-gradient(135deg, hsla(319, 82%, 52%, 1) 0%, hsla(197, 61%, 83%, 1) 100%);
+    
+    background: -webkit-linear-gradient(135deg, hsla(319, 82%, 52%, 1) 0%, hsla(197, 61%, 83%, 1) 100%);
+    
+    filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#E91FA8", endColorstr="#B9DFEE", GradientType=1 );}
+.playlist-thumb:nth-child(18){background: hsla(39, 100%, 71%, 1);
+
+    background: linear-gradient(135deg, hsla(39, 100%, 71%, 1) 0%, hsla(216, 100%, 62%, 1) 100%);
+    
+    background: -moz-linear-gradient(135deg, hsla(39, 100%, 71%, 1) 0%, hsla(216, 100%, 62%, 1) 100%);
+    
+    background: -webkit-linear-gradient(135deg, hsla(39, 100%, 71%, 1) 0%, hsla(216, 100%, 62%, 1) 100%);
+    
+    filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#FFCB6B", endColorstr="#3D8BFF", GradientType=1 );}
+.playlist-thumb:nth-child(19){
+    background: hsla(24, 100%, 83%, 1);
+    background: linear-gradient(135deg, hsla(24, 100%, 83%, 1) 0%, hsla(341, 91%, 68%, 1) 100%);
+    background: -moz-linear-gradient(135deg, hsla(24, 100%, 83%, 1) 0%, hsla(341, 91%, 68%, 1) 100%);
+    background: -webkit-linear-gradient(135deg, hsla(24, 100%, 83%, 1) 0%, hsla(341, 91%, 68%, 1) 100%);
+    filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#FFCAA6", endColorstr="#F86594", GradientType=1 );}
+
+.playlist-thumb:hover{
+    box-shadow: 0px 0px 2px 5px rgba(223, 223, 223, 0.1);
+
+}
+
+/* Screen Browser Styling */
+
+#browser{
+    background: hsla(0, 0%, 17%, 1);
+    background: linear-gradient(-45deg, hsla(0, 0%, 17%, 1) 0%, hsla(0, 0%, 9%, 1) 100%);
+    background: -moz-linear-gradient(-45deg, hsla(0, 0%, 17%, 1) 0%, hsla(0, 0%, 9%, 1) 100%);
+    background: -webkit-linear-gradient(-45deg, hsla(0, 0%, 17%, 1) 0%, hsla(0, 0%, 9%, 1) 100%);
+    filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#2B2B2B", endColorstr="#161616", GradientType=1 );
+    background-size: cover;
+    height: 99%;
+    width: 100%;
+    margin-left: 10px;
+    margin-right: 10px;
+    border-radius: 10px;
+    z-index: 15;
+
+}
+
+/* Screen Right Panel Styling */
+
+#r-panel{
+    background-color: rgb(22, 22, 22);
+    height: 99%;
+    width: 40%;
+    display: none;
+    /* margin-left: 10px; */
+    margin-right: 10px;
+    border-radius: 10px;
+}
+
+/* Player Styling */
+
+#player>#track-details>#track>span{
+    color: rgb(223, 223, 223);
+    cursor: pointer;
+    transition: 0.1s all;
+    margin-left: 20px;
+}
+#player>#track-details>#track>span:hover{
+    color: white;
+}
+#track-details{
+    height: 100%;
+    width: 25vw;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-shrink: 0;
+    flex-grow: 0;
+}
+#thumbnail{
+    height: 55px;
+    width: 55px;
+    background-image: url(https://c.saavncdn.com/520/Baarishein-English-2018-20180522204131-500x500.jpg);
+    /* background-color: aqua; */
+    background-size: cover;
+    /* margin-left: 23px; */
+    border-radius: 5px;
+    margin-left: 18px;
+    flex-shrink: 0;
+    flex-grow: 0;
+}
+#track{
+    margin-left: 10px;
+    display: flex;
+    flex-direction: row;
+    height: 55px;
+    width: 80%;
+    /* background-color: blueviolet; */
+    align-items: center;
+    justify-content: left;
+    flex-shrink: 0;
+    flex-grow: 0;
+}
+#track-info{
+    display: flex;
+    flex-direction: column;
+    font-family: sans-serif;
+    color: white;
+    font-weight: lighter;
+    justify-content: left;
+}
+#trackName{
+    display: flex;
+    align-items: center;
+    font-weight: bold;
+    cursor: pointer;
+}
+#trackName:hover{
+    text-decoration: underline;
+}
+
+#trackArtist{
+    font-size: 11px;
+    color: rgb(128, 128, 128);
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    font-weight: bold;
+    cursor: pointer;
+}
+#trackArtist:hover{
+    color: rgb(196, 196, 196);
+    text-decoration: underline;
+}
+
+#controller-box{
+    /* background-color: aqua; */
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 50vw;
+}
+#controls{
+    display: flex;
+    flex-direction: row;
+    height: 50%;
+    width: 100%;
+    /* background-color: blue; */
+    color: white;
+    align-items: center;
+    justify-content: center;
+}
+.c-icon{
+    margin-left: 20px;
+    font-size: 20px;
+    color: rgb(143, 143, 143);
+    cursor: pointer;
+}
+.c-icon:hover{
+    color: white;
+}
+
+.fa-circle-play{
+    font-size: 35px;
+    color: white;
+    transition: all 0.1s;
+}
+.fa-circle-pause{
+    font-size: 35px;
+    color: white;
+    transition: all 0.1s;
+}
+.fa-circle-play:hover{
+    transform: scale(1.1);
+}
+.fa-circle-pause:hover{
+    transform: scale(1.1);
+}
+
+#seek{
+    /* background-color: yellowgreen; */
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    height: 50%;
+    width: 100%;
+}
+.seekel{
+    margin-left: 10px;
+}
+input#progress[type="range"]{
+    -webkit-appearance: none;
+    appearance: none;
+    background: transparent;
+    cursor: pointer;
+    width: 80%;
+}
+input#progress[type="range"]::-webkit-slider-runnable-track {
+    background: rgb(182, 182, 182);
+    height: 4px;
+    border-radius: 2px;
+}
+input#progress[type="range"]::-webkit-slider-thumb{
+    visibility: hidden;
+}
+input#progress[type="range"]:hover::-webkit-slider-thumb{
+    visibility: visible;
+    -webkit-appearance: none;
+    height: 13px;
+    width: 13px;
+    border-radius: 50%;
+    background-color: white;
+    margin-top: -4.5px;
+}
+input#volu[type="range"]{
+    -webkit-appearance: none;
+    appearance: none;
+    background: transparent;
+    cursor: pointer;
+    width: 40%;
+}
+input#volu[type="range"]::-webkit-slider-runnable-track {
+    background: rgb(182, 182, 182);
+    height: 4px;
+    border-radius: 2px;
+}
+input#volu[type="range"]::-webkit-slider-thumb{
+    visibility: hidden;
+}
+input#volu[type="range"]:hover::-webkit-slider-thumb{
+    visibility: visible;
+    -webkit-appearance: none;
+    height: 13px;
+    width: 13px;
+    border-radius: 50%;
+    background-color: white;
+    margin-top: -4.5px;
+}
+#volu{
+    margin-right: 10px;
+}
+.timestamp{
+    color: rgb(170, 170, 170);
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-size: 11px;
+}
+#tools{
+    /* background-color: blue; */
+    width: 25vw;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: right;
+
+}
+.t-icon{
+    color: rgb(199, 199, 199);
+    margin-right: 10px;
+    cursor: pointer;
+}
+.t-icon:hover{
+    color: white;
+    transform: scale(1.03);
+}
+.t-icon>span{
+    font-size: 22px;
+}
+#browser{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: end;
+    color: rgb(109, 109, 109);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+#browser>p:nth-child(1){
+    margin-right: 100px;
+    font-size: smaller;
+}
+#browser>p:nth-child(2){
+    margin-bottom: 8px;
+    font-size: smaller;
+    margin-right: 12px;
+}
+#browser>p>span{
+    font-family: 'Oooh Baby', cursive;
+    display: inline-block;
+    font-size: 18px;
+    font-weight: bolder;
+    color: rgb(131, 131, 131);
+    cursor: pointer;
+    transition: 0.2s all;
+
+}
+#browser>p>span:hover{
+    color: rgb(211, 211, 211);
+    transform: scale(1.1);
+    margin-right: 8px;
+    margin-left: 5px;
+    text-shadow: 0px 0px 10px rgb(255, 14, 14);
+
+}
+#browser>p>a{
+    margin-right: 1px;
+    font-family: 'Oooh Baby', cursive;
+    display: inline-block;
+    font-size: 18px;
+    font-weight: bolder;
+    color: rgb(131, 131, 131);
+    cursor: pointer;
+    transition: 0.2s all;
+    text-decoration: none;
+
+}
+#browser>p>a:hover{
+    color: rgb(211, 211, 211);
+    transform: scale(1.1);
+    margin-right: 9px;
+    margin-left: 5px;
+    text-shadow: 0px 0px 20px rgb(18, 253, 100);
+}
+#track>.material-icons{
+    display: none;
+    user-select: none;
+}
+.favorite{
+    user-select: none;
+}
+/* Add this CSS to your stylesheet */
+.favorite {
+    transition: opacity 0.3s ease;
+    transition: 0.5s all ease-in-out;
+    /* Add any other styles you need for the favorite icon */
+  }
+  .favorite:active {
+    scale: 1.5;
+  }
+
+  
+  .favorite-filled {
+    display: none;
+    transition: opacity 0.3s ease;
+    transition: 1s all ease-in-out;
+    /* Add any other styles you need for the filled favorite icon */
+  }
+  .favorite-filled:active {
+    scale: 0.5;
+  }
+
+  
+#progress{
+    transition: 0.1s all;
+}
+
+.shuffle-on {
+    color: #1ED760;
+}
+
+    </style>
+    <link rel="shortcut icon" href="icons8-spotify-120.png" type="image/x-icon">
+    <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@48,500,0,200" /> -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@48,300,0,0" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Icons&display=swap" rel="stylesheet">
+
+</head>
+<body>
+    <div id="main">
+        <div id="screen">
+            <div id="l-panel">
+                <div id="nav">
+                    <div class="nav-icon" id="home">
+                        <a href="#">
+                            <span class="material-symbols-rounded">
+                                home
+                            </span>
+                        </a>
+                    </div>
+                    <div class="nav-icon" id="search">
+                        <a href="#">
+                            <span class="material-symbols-rounded">
+                            search
+                            </span>
+                        </a>
+                    </div>
+                </div>
+                <div id="playlist">
+                    <div class="icon" id="books">
+                        <span class="material-symbols-rounded" id="libraryico" onclick="libexpand()">
+                        overview_key
+                        </span>
+                    </div>
+                    <div id="playlist-cont">
+                        <div class="playlist-thumb"></div>
+                        <div class="playlist-thumb"></div>
+                        <div class="playlist-thumb"></div>
+                        <div class="playlist-thumb"></div>
+                        <div class="playlist-thumb"></div>
+                        <div class="playlist-thumb"></div>
+                        <div class="playlist-thumb"></div>
+                        <div class="playlist-thumb"></div>
+                        <div class="playlist-thumb"></div>
+                        <div class="playlist-thumb"></div>
+                        <div class="playlist-thumb"></div>
+                        <div class="playlist-thumb"></div>
+                        <div class="playlist-thumb"></div>
+                        <div class="playlist-thumb"></div>
+                        <div class="playlist-thumb"></div>
+                        <div class="playlist-thumb"></div>
+                        <div class="playlist-thumb"></div>
+                        <div class="playlist-thumb"></div>
+                        <div class="playlist-thumb"></div>
+
+                    </div>
+                </div>
+            </div>
+            <div id="browser">
+                <p>© Spotify Practice Project</p>
+                <p>Designed by <a href="https://www.instagram.com/sanskargupta80/" target="_blank">Sanskar Gupta </a> with <span>♡</span></p>
+            </div>
+            <div id="r-panel">
+
+            </div>
+        </div>
+        <div id="player">
+            <div id="track-details">
+                <div id="thumbnail" class="album-art">
+
+                </div>
+                <div id="track">
+                    <div id="track-info">
+                        <div id="trackName">Baarishein</div>
+                        <div id="trackArtist">Anuv Jain</div>
+                    </div>
+                    <span class="material-symbols-rounded favorite">
+                        favorite
+                    </span>
+                    <span class="material-icons favorite-filled">favorite</span>
+
+                </div>
+                
+            </div>
+            <div id="controller-box">
+                <div id="controls">
+                    <audio id="audioPlayer" src="Baarishein.mp3"></audio>
+                    <div class="c-icon" id="shuffle"><i class="fa-solid fa-shuffle fa-flip-vertical"></i></div>
+                    <div class="c-icon" id="previous" onclick="playPreviousTrack()"><i class="fa-solid fa-backward-step"></i></div>
+                    <div class="c-icon" id="playPause"><i class="fa-solid fa-circle-play"></i></div>
+                    <div class="c-icon" id="next" onclick="playNextTrack()"><i class="fa-solid fa-forward-step"></i></div>
+                    <div class="c-icon" id="repeat"><i class="fa-solid fa-repeat"></i></div>
+
+                </div>
+                <div id="seek">
+                    <div id="progressTime" class="timestamp seekel" >0:00</div>
+                    <input type="range" name="seekBar" id="progress" class="seekel" step="0.001">
+                    <div id="totalTime" class="timestamp seekel">5:29</div>
+                </div>
+
+            </div>
+            <div id="tools">
+                <div class="t-icon" id="r-toggle"><span class="material-symbols-rounded">
+                    slideshow
+                    </span>
+                    </div>
+                <div class="t-icon" id="lyrics"><span class="material-symbols-rounded">
+                    keyboard_voice
+                    </span></div>
+                <div class="t-icon" id="queue"><span class="material-symbols-rounded">
+                    queue_music
+                    </span></div>
+                <div class="t-icon" id="device"><span class="material-symbols-rounded">
+                    speaker
+                    </span></div>
+                <div class="t-icon" id="volume"><span class="material-symbols-rounded">
+                    volume_up
+                    </span>
+            </div>
+                
+                <input type="range" name="vol" id="volu">
+            </div>
+        </div>
+    </div>
+    <script>
+        // Function to adjust playlist size
+function adjustPlaylistSize() {
+    const screenDiv = document.getElementById("screen");
+    const playlistDiv = document.getElementById("playlist-cont");
+  
+    const availableHeight = screenDiv.clientHeight;
+    const headerHeight = document.getElementById("nav").clientHeight;
+    const playerHeight = document.getElementById("player").clientHeight;
+    const playlistMargin = 0; // Adjust this value if needed
+  
+    const playlistHeight = availableHeight - headerHeight - playerHeight - playlistMargin;
+    playlistDiv.style.height = playlistHeight + "px";
+  }
+  
+  // Initially adjust playlist size
+  adjustPlaylistSize();
+  
+  // Call the function on window resize
+  window.addEventListener("resize", adjustPlaylistSize);
+
+// Get references to the favorite icons
+const roundedFavorite = document.querySelector(".favorite");
+const materialFavorite = document.querySelector(".favorite-filled");
+
+// Add an event listener to the rounded favorite icon
+roundedFavorite.addEventListener("click", function() {
+    // Toggle visibility of the favorite icons
+    roundedFavorite.style.display = "none";
+    materialFavorite.style.display = "block";
+});
+
+materialFavorite.addEventListener("click", function() {
+  // Toggle visibility of the favorite icons
+  roundedFavorite.style.display = "block";
+  materialFavorite.style.display = "none";
+});
+
+
+
+const audio = document.getElementById('audioPlayer');
+
+
+// Function to play or pause the track
+function togglePlay() {
+    if (audio.paused) {
+        audio.play();
+        document.getElementById('playPause').innerHTML = '<i class="fa-solid fa-circle-pause"></i>';
+    } else {
+        audio.pause();
+        document.getElementById('playPause').innerHTML = '<i class="fa-solid fa-circle-play"></i>';
+    }
+}
+
+
+
+// Event listener to toggle play/pause
+document.getElementById('playPause').addEventListener('click', togglePlay);
+
+// Function to update progress bar
+function updateProgressBar() {
+    const progress = (audio.currentTime / audio.duration) * 100;
+    document.getElementById('progress').value = progress;
+}
+
+// Event listener to update progress bar
+audio.addEventListener('timeupdate', updateProgressBar);
+
+const volumeSlider = document.getElementById('volu'); // Assuming the volume slider has an id of 'volu
+
+volumeSlider.addEventListener('input', function() {
+    const volume = this.value / 100; // Convert the slider value to a range of 0 to 1
+    audio.volume = volume; // Set the volume of the audio element
+});
+
+const seekBar = document.getElementById('progress'); // Assuming the seek bar has an id of 'progress'
+
+seekBar.addEventListener('input', function() {
+    const seekTime = this.value * audio.duration / 100; // Calculate the seek time based on the slider value
+    audio.currentTime = seekTime; // Set the current playback time of the audio element
+});
+
+// Update the seek bar as the audio plays
+audio.addEventListener('timeupdate', function() {
+    const progress = (audio.currentTime / audio.duration) * 100; // Calculate the progress percentage
+    seekBar.value = progress; // Update the seek bar value
+});
+
+const tracks = [
+  {
+      albumArt: 'https://c.saavncdn.com/520/Baarishein-English-2018-20180522204131-500x500.jpg',
+      trackName: 'Baarishein',
+      trackArtist: 'Anuv Jain',
+      source: 'Baarishein.mp3'
+  },
+  {
+      albumArt: 'https://c.saavncdn.com/266/Gul-Hindi-2021-20210706151615-500x500.jpg',
+      trackName: 'Gul',
+      trackArtist: 'Anuv Jain',
+      source: 'gul.mp3'
+  },
+  {
+      albumArt: 'https://c.saavncdn.com/078/Dev-Hindi-2021-20220830155616-500x500.jpg',
+      trackName: 'Liggi',
+      trackArtist: 'Ritviz',
+      source: 'liggi.mp3'
+  }
+];
+
+let currentTrackIndex = 0;
+
+function updateTrackInfo(trackIndex) {
+  const albumArtElement = document.getElementById('thumbnail');
+  const trackNameElement = document.getElementById('trackName');
+  const trackArtistElement = document.getElementById('trackArtist');
+
+  albumArtElement.style.backgroundImage = `url(${tracks[trackIndex].albumArt})`;
+  trackNameElement.textContent = tracks[trackIndex].trackName;
+  trackArtistElement.textContent = tracks[trackIndex].trackArtist;
+
+  audio.src = tracks[trackIndex].source;
+    audio.load();
+}
+
+function playNextTrack() {
+  currentTrackIndex = (currentTrackIndex + 1) % tracks.length;
+  updateTrackInfo(currentTrackIndex);
+  audio.play();
+}
+
+function playPreviousTrack() {
+  currentTrackIndex = (currentTrackIndex - 1 + tracks.length) % tracks.length;
+  updateTrackInfo(currentTrackIndex);
+  audio.play();
+}
+
+updateTrackInfo(0); // Index 1 corresponds to the second track in the array (0-based index)
+
+const progressTimeElement = document.getElementById('progressTime');
+
+audio.addEventListener('timeupdate', function() {
+    const currentTime = Math.floor(audio.currentTime);
+    const minutes = Math.floor(currentTime / 60);
+    const seconds = currentTime % 60;
+    const formattedTime = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    progressTimeElement.textContent = formattedTime;
+});
+
+const totalTimeElement = document.getElementById('totalTime');
+
+audio.addEventListener('loadedmetadata', function() {
+    const totalDuration = Math.floor(audio.duration);
+    const totalMinutes = Math.floor(totalDuration / 60);
+    const totalSeconds = totalDuration % 60;
+    const formattedTotalTime = `${totalMinutes.toString().padStart(2, '0')}:${totalSeconds.toString().padStart(2, '0')}`;
+    totalTimeElement.textContent = formattedTotalTime;
+});
+
+const shuffleIcon = document.getElementById('shuffle');
+
+shuffleIcon.addEventListener('click', function() {
+    const isShuffleOn = shuffleIcon.classList.toggle('shuffle-on');
+    shuffleIcon.setAttribute('data-shuffle', isShuffleOn.toString());
+});
+
+
+// Assuming 'audio' is the variable referring to your audio element
+document.addEventListener('keydown', function(event) {
+  if (event.keyCode === 32) { // 32 is the keyCode for space key
+      if (audio.paused) {
+          audio.play();
+          document.getElementById('playPause').innerHTML = '<i class="fa-solid fa-circle-pause"></i>';
+      } else {
+          audio.pause();
+          document.getElementById('playPause').innerHTML = '<i class="fa-solid fa-circle-play"></i>'
+      }
+  }
+});
+
+document.addEventListener('keydown', function(event) {
+  if (event.altKey && event.key === 'ArrowRight') {
+      // Code to play the next track goes here
+      playNextTrack();
+      document.getElementById('playPause').innerHTML = '<i class="fa-solid fa-circle-pause"></i>'
+  }
+});
+
+document.addEventListener('keydown', function(event) {
+  if (event.altKey && event.key === 'ArrowLeft') {
+      // Code to play the next track goes here
+      playPreviousTrack();
+      document.getElementById('playPause').innerHTML = '<i class="fa-solid fa-circle-pause"></i>'
+  }
+});
+
+let isShuffleOn = false;
+
+document.addEventListener('keydown', function(event) {
+    if (event.key === 's') {
+        toggleShuffle();
+    }
+});
+
+function toggleShuffle() {
+    isShuffleOn = !isShuffleOn;
+
+    const shuffleIcon = document.querySelector('#shuffle');
+    if (isShuffleOn) {
+        // Shuffle is on, change icon color to green
+        shuffleIcon.style.color = '#1DB954';
+    } else {
+        // Shuffle is off, change icon color to default
+        shuffleIcon.style.color = '';
+    }
+}
+
+document.addEventListener('keydown', function(event) {
+    if (event.altKey) {
+        if (event.key === 'ArrowUp') {
+            // Increase volume
+            audio.volume += 0.01; // You can adjust the increment value as needed
+            
+        } else if (event.key === 'ArrowDown') {
+            // Decrease volume
+                audio.volume -= 0.01; // You can adjust the decrement value as needed
+        }
+    }
+});
+
+
+document.addEventListener("keydown", function(event) {
+    const seekBar = document.getElementById("progress");
+
+    if (event.code === "ArrowRight") {
+        // Seek forward 5 seconds
+        audio.currentTime += 5;
+    } else if (event.code === "ArrowLeft") {
+        // Seek backward 5 seconds
+        audio.currentTime -= 5;
+    }
+
+    // Update seek bar position
+    seekBar.value = (audio.currentTime / audio.duration) * 100;
+});
+
+
+
+var libico = document.getElementById('libraryico');
+var lPanel = document.getElementById('l-panel');
+var nav = document.getElementById('nav');
+var home = document.getElementById('home');
+var search = document.getElementById('search');
+
+function libexpand() {
+    lPanel.style.width = '300px';
+    nav.style.alignItems = 'initial';
+    home.style.marginLeft = '20px';
+    search.style.marginLeft = '20px';
+    
+    
+}
+    </script>
+
+</body>
+</html>
